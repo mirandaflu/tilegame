@@ -1,0 +1,165 @@
+<!--
+
+	written by Miranda Fluharty, concept not mine
+
+	I saw this somewhere on the internet once, and I was not very good at solving it,
+	but I always have a love-hate relationship with puzzles that I'm not good at.
+	Eventually I lost the link to the original, but I knew it would bother me if I
+	never got to play it again, so I put it together here. Even after making it myself
+	and studying how it works, I'm still tragically bad at this puzzle, but I take
+	comfort in the fact that the way that I coded it makes it always solvable.
+
+-->
+
+<html>
+	<head>
+	
+		<title>Tile Game</title>
+		
+		<link rel="stylesheet" href="tilegame.css" />
+		
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+		
+		<script type="text/javascript">
+			
+			function switchcell(cellno) {
+				
+				if (document.getElementById('cell' + cellno).style.backgroundColor == 'white')
+				{
+					document.getElementById('cell' + cellno).style.backgroundColor = 'black';
+				}
+				else {
+					document.getElementById('cell' + cellno).style.backgroundColor = 'white';
+				}
+				
+			}
+			
+			function click(cellno, totalcells) {
+				
+				var i;
+				var cols = Math.sqrt(totalcells);
+				
+				i = cellno;
+				while (i <= totalcells-1) {
+					switchcell(i);
+					if (i % cols == cols-1) i = totalcells;
+					i = i + (cols + 1);
+				}
+				
+				i = cellno;
+				while (i >= 0) {
+					switchcell(i);
+					if (i % cols == 0) i = -1
+					i = i - (cols + 1);
+				}
+				
+				i = cellno;
+				while (i <= totalcells-1) {
+					switchcell(i);
+					if (i % cols == 0) i = totalcells;
+					i = i + (cols - 1);
+				}
+				
+				i = cellno;
+				while (i >= 0) {
+					switchcell(i);
+					if (i % cols == cols-1) i = -1;
+					i = i - (cols - 1);
+				}
+				
+				switchcell(cellno)
+				
+				var whites = 0;
+				var blacks = 0;
+				
+				for (var i = 0; i < totalcells; i++) {
+
+					if (document.getElementById('cell'+i).style.backgroundColor == 'white')
+						whites++;
+					else if (document.getElementById('cell'+i).style.backgroundColor == 'black')
+						blacks++;
+
+				}
+				
+				if ((whites == 0) || (blacks == 0)) {
+					var newnum = Math.sqrt(totalcells)+1;
+					generatetable(newnum);
+				}
+				
+			}
+			
+			function clickrand(num) {
+				
+				var spot = Math.floor(Math.random()*num*num, num*num);
+				//console.log(spot);
+				click(spot, (num+1)*(num+1));
+				
+			}
+			
+			function generatetable(num) {
+			
+				num = num - 1;
+				var randtable = document.getElementById('randcode');
+				randtable.innerHTML = '';
+				var cells = new Array();
+				var row;
+				var numcells = 0;
+				
+				for (var i = 0; i <= num; i++) {
+					
+					row = randtable.insertRow(-1);
+					
+					for (var j = 0; j <= num; j++) {
+						
+						cells[numcells] = row.insertCell(-1);
+						numcells++;
+						
+					}
+				
+				}
+				
+				for (var i = 0; i < numcells; i++) {
+					cells[i].onclick = new Function("click("+i+", "+numcells+",1)");
+					cells[i].id = 'cell'+i;
+					cells[i].className = 'cell';
+					switchcell(i);
+				}
+				
+				clickrand(num);
+				clickrand(num);
+				clickrand(num);
+				
+			}
+			
+		</script>
+		
+	</head>
+	<body onload="generatetable(4);">
+	
+		<br /><br />
+		
+		<table cellspacing="5" cellpadding="10">
+			<tr>
+				<th>Tile Game</th>
+			</tr>
+				<tr>
+					<td class="random">
+						<table id="randcode">
+						
+							
+
+						</table>
+					</td>
+				</tr>
+		</table>
+		<div class="random" id="instructions" style="text-align:center; color:white;">
+			<!--[if IE]>
+				I know, it doesn't work in IE :\
+			<![endif]-->
+			<![if !IE]>
+				Make them all the same color.
+			<![endif]>
+		</div>
+	
+	</body>
+</html>

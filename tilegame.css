@@ -1,0 +1,29 @@
+
+body {
+	background-image:url('./images/bg.png');
+	background-color:#464646;
+	background-repeat:repeat-x;
+	font-family:"Palatino Linotype",georgia,serif;
+	color:#222;
+	text-align:center;
+}
+
+table {
+	margin-left:auto;
+	margin-right:auto
+}
+
+td {
+	text-align:center;
+	background-color:#00aeef;
+}
+
+th {
+	color:#eee;
+}
+
+table#randcode td {
+	background-color:white;
+	width:30;
+	height:30;
+}
